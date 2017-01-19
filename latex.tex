@@ -1,0 +1,290 @@
+\documentclass[twoside,a4paper]{article}
+\usepackage{geometry}
+\usepackage{amssymb}
+\usepackage{lipsum}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage[cm-default]{fontspec}
+\usepackage{fancyhdr}
+\usepackage[hidelinks,xetex]{hyperref}
+\usepackage[export]{adjustbox}
+\usepackage{xunicode}
+\usepackage[ampersand]{easylist}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{array}
+%\usepackage{xltxtra}
+%
+% Ελληνικό Hyphenation, αφαιρέστε το αν δεν έχετε εγκατεστημένο το xgreek.
+\usepackage{xgreek}
+% Γραμματοσειρά
+%code style
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{1,1,1}
+ 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+ 
+\lstset{style=mystyle}
+%end code style
+\geometry{
+ a4paper,
+ total={160mm,240mm},
+ left=25mm,
+ top=28mm,
+ headsep=15pt,
+  footskip=10pt,
+  asymmetric
+ }
+ \graphicspath{ {images/} }
+
+\setmainfont[Mapping=tex-text,Scale=1.1]{DejaVu Sans}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\newcommand\upspace[1][1cm]{\hspace*{#1}}
+\setlength{\parskip}{1em}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\date{Ιανουάριος 2017}}
+\lhead{Δημοκρίτειο Πανεπιστήμιο Ξάνθης}
+\rfoot{\center Σελίδα \thepage}
+ 
+ \author{
+  Παναγιωτακόπουλος Θεόδωρος\      \texttt{theopana3@ee.duth.gr}
+  \and
+  Μπαρμπέρης Δημήτρης\      \texttt{ dimibarb2@ee.duth.gr}
+  \and
+  Αγγελής Τζούχας\      \texttt{angetzou@ee.duth.gr}
+}
+\title{\begin{doublespacing}{\Large\textbf{\underline{Τεχνικές Διασύνδεσης} \\ {\large 9\textsuperscript{o} εξάμηνο}}} \end{doublespacing}}
+\date{}
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+\setlength{\parskip}{0.6em}
+\section{ Εισαγωγή}
+ \begin{flushleft}
+\par Το project που κατασκευάσαμε στα πλαίσια του μαθήματος «Τεχνικές Διασύνδεσης Ψηφιακών Συστημάτων» αποτελεί ένα σύστημα για την ανίχνευση εισβολέων σε ένα χώρο, καθώς και την ανίχνευση του φυσικού κινδύνου της φωτιάς. Το σύστημα αυτό μπορεί να επιβλέπεται από έναν απομακρυσμένο χρήστη διαδικτυακά. 
+\\ Αναλυτικότερα, χρησιμοποιήσαμε δύο συσκευές οι οποίες επικοινωνούν μεταξύ τους. Η πρώτη ανιχνεύει την παραβίαση μιας πόρτας ή παραθύρου, την κίνηση και την ύπαρξη καπνού, ενώ η δεύτερη μετράει τη θερμοκρασία και στέλνει όλες τις μετρήσεις των αισθητήρων σε μία σελίδα που δημιουργήσαμε στο διαδίκτυο.
+\par 
+Για την υλοποίηση του project χρειάστηκαν τα εξαρτήματα:
+\begin{itemize}
+\item 2 Arduino Uno
+\item 1 Ethernet Shield
+\item 1 αισθητήρα θερμοκρασίας (TMP36)
+\item magnetic door switch
+\item RF (radio frequency) 315 MHz ζεύγος πομπού-δέκτη (transmitter-receiver module)
+\item 1 αισθητήρα απόστασης – κίνησης (ultrasonic sensor)
+\item 1 ρελέ (relay) (optional)
+\item 1 λάμπα (optional)
+\item 1 αισθητήρα καπνού (MQ2 gas sensor)
+\item 1 buzzer (optional)
+\item 2 Breadboards
+\item καλώδια 
+\item αντιστάσεις
+
+\end{itemize}
+
+\par 
+Τα παραπάνω υλικά τα προμηθευτήκαμε από το κατάστημα Hellas Digital στην Αθήνα και το συνολικό τους κόστος ήταν 54 ευρώ.
+ \end{flushleft}
+ \section{Συσκευή 1\textsuperscript{η} – Ανιχνευτής εισβολέα, καπνού}
+ \setlength{\parskip}{0.6em}
+ \begin{flushleft}
+ Αυτή η συσκευή περιλαμβάνει το ένα Arduino, αισθητήρα απόστασης – κίνησης, αισθητήρα καπνού (MQ2 gas sensor), magnetic door switch, το ρελέ με τη λάμπα, buzzer κι έναν πομπό RF (radio frequency).
+ \par
+ Ο \textbf{αισθητήρας απόστασης – κίνησης}  λειτουργεί εκπέμποντας υπερήχους οι οποίοι ανακλώνται πάνω στα αντικείμενα που βρίσκονται μπροστά του και επιστρέφουν στον αισθητήρα, ο οποίος από τη χρονική διαφορά τις εκπομπής και της λήψης υπολογίζει την απόσταση. Αυτόν τον αισθητήρα τον χρησιμοποιούμε για την ανίχνευση κίνησης μέσω της μεταβολής απόστασης. Δέχεται γείωση GND, echo, trigger και Vcc. Τοποθετούμε το GND στο GND του Arduino, το VCC συνδέεται με τάση ίση με 5V, το Echo με το 12\textsuperscript{o} Digital pin, ενώ το Trigger καταλήγει στο 13\textsuperscript{o} Digital pin. Επίσης, για τον συγκεκριμένο αισθητήρα χρησιμοποιήθηκε μία επιπλέον βιβλιοθήκη (library). Αυτή ονομάζεται NewPing και μπορεί να βρεθεί στην σελίδα της Arduino στο παρακάτω link: url{https://bitbucket.org/teckel12/arduino-new-ping/downloads} .
+\par
+Ο \textbf{αισθητήρας καπνού} λειτουργεί με το φαινόμενο απορρόφησης ακτινοβολίας. Ο καπνός μεταβάλλει τη σύσταση του υλικού που βρίσκεται μέσα στον αισθητήρα αλλάζοντας την αντίστασή του κι έτσι η τάση εξόδου Vout μεταβάλλεται, με υψηλότερη τάση εξόδου να σημαίνει περισσότερος καπνός. Το ποτενσιόμετρο που βρίσκεται πίσω από τον αισθητήρα ελέγχει την ευαισθησία του. Δέχεται ακόμη (Analog pin) A0, (Digital pin) D0, τροφοδοσία Vcc και γείωση GND. Στην παρούσα εργασία χρησιμοποιούμε το A0 του αισθητήρα και το ενώνουμε στο αντίστοιχο A0 (Analog pin 0) του Arduino και με την VCC και GND στα 5V και στο GND του Arduino αντίστοιχα.
+\par 
+Ο \textbf{αισθητήρας magnetic door switch} που ανιχνεύει το άνοιγμα της πόρτας. Όταν τα δύο εξαρτήματα έρχονται σε επαφή έλκονται οι μαγνητικές επαφές και το κύκλωμα κλείνει. Σε διαφορετική περίπτωση το κύκλωμα είναι ανοιχτό. Έχει δύο συνδέσεις. Η μία ενώνεται στην τάση που είναι ίση με 5 Volt και η άλλη πηγαίνει στο D11 του Digital In.
+\par 
+Το \textbf{ρελέ} εμφανίζει συμπεριφορά διακόπτη σε κυκλώματα υψηλής τάσης (πχ 220V). O διακόπτης μπορεί να ελεγχθεί από ένα control pin, παίρνει τροφοδοσία 5V (Vcc) και γείωση (GND). Το ρελέ έχει 3 ports τα VCC, GND  και  VIN. Τα δύο πρώτα συνδέονται στην τάση 5 V και GND αντίστοιχα, ενώ το VIN συνδέεται στο Digital pin 9 του Arduino.
+\par 
+O \textbf{buzzer} έχει ένα control pin που όταν δεχθεί μηδενική τάση παράγει ήχο, τροφοδοσία (Vcc τοποθετούμε 5V) και γείωση (GND). Ενώ το άλλο pin (I-O) του buzzer το συνδέουμε στο Digital pin 9 του Arduino. 
+\par 
+Το \textbf{RF module} χρησιμοποιείται για την επικοινωνία με τον RF receiver ο οποίος βρίσκεται στη δεύτερη συσκευή. Δέχεται 3 pins, Data, Vcc, GND. To Data συνδέεται στο Digital 5 του Arduino, το Vcc στο 5V και το GND στη γείωση. Αφιερώνεται ξεχωριστή ενότητα στην επικοινωνία μέσω του RF Module παρακάτω.
+ \end{flushleft}
+ \newpage 
+\vspace{5mm}
+ \begin{figure}[h]
+ \includegraphics[width=0.9\textwidth,right]{dev1}
+ \caption{ Κύκλωμα 1\textsuperscript{ης} συσκευής}
+ \end{figure}
+\vspace{4mm}
+ {\large\center Καλωδίωση\\}
+  \vspace{6mm}
+ \par\textendash\hspace{0.5mm} \underline{Αισθητήρας Απόστασης - Κίνησης} \\
+ 
+ \tab\hspace{1.5mm} GND --> GND, ECHO --> PIN D12, TRIGGER --> PIN D13, VCC --> 5V \\
+ 
+ \par\textendash\hspace{0.5mm} \underline{Αισθητήρας Καπνού} \\
+  
+ \tab\hspace{1.5mm} Vcc --> 5V, Α0 --> Α0, GND --> GND, D0 --> NO USE\\
+ \par\textendash\hspace{0.5mm} \underline{ Ρελέ} \\
+ 
+ \tab\hspace{1.5mm} Vcc --> 5V, GND --> GND, Vin --> D9\\
+  \par\textendash\hspace{0.5mm} \underline{ Buzzer} \\
+ 
+ \tab\hspace{1.5mm} Vcc --> 5V, GND --> GND, Ι-Ο pin --> D9\\
+ \par\textendash\hspace{0.5mm} \underline{ RF - πομπός} \\
+ 
+ \tab\hspace{1.5mm} Vcc --> 5V, GND --> GND, Data --> D5\\
+ \newpage
+ {\large \begin{center} Ακολουθεί ο κώδικας της 1 \textsuperscript{ης} συσκευής \end{center}}
+ \lstinputlisting[language=C]{codes/dev1.ino}
+ \newpage
+ {\large \begin{center} Σχόλια κώδικα 1 \textsuperscript{ης} συσκευής\end{center}}
+ \begin{flushleft}
+ \par Ο κώδικας παρουσιάζεται με σχόλια, ωστόσο θα θέλαμε να τονίσουμε ιδιαίτερα ορισμένα σημεία που μας δυσκόλεψαν.
+Παρατηρήσαμε ότι ο αισθητήρας απόστασης – κίνησης αφενός εμφανίζει ως έξοδο σε τακτά χρονικά διαστήματα μηδενικά τα οποία δεν ανταποκρίνονται στην απόσταση που «βλέπει» και αφετέρου οι μετρήσεις απόστασης είναι ασταθείς. Για την επίλυση των δύο παραπάνω προβλημάτων αφενός παίρνουμε μόνο τις τιμές μεγαλύτερες του μηδενός και αφετέρου υπολογίζουμε τον μέσο όρο έξι μη μηδενικών μετρήσεων. Τα παραπάνω υλοποιούνται στη συνάρτηση \textit{read()} (βλ. γραμμές \textit{31-40}). 
+Επιπλέον, για τη μεταφορά δεδομένων μέσω RF με την εντολή \textit{vw\_send} απαιτείται να δώσουμε ως είσοδο έναν πίνακα από bytes. Η εργασία μας απαιτεί τη μεταφορά ενός ακέραιου αριθμού (ο οποίος δηλώνει τη τρέχουσα κατάσταση των αισθητήρων) ο οποίος μετατρέπεται σε πίνακα χαρακτήρων (char array) μέσω της συνάρτησης \textit{itoa()}, γιατί \textit{char = byte}. Αυτό υλοποιείται στις γραμμές \textit{99-102}.
+
+
+\section{Συσκευή 2\textsuperscript{η} – Μέτρηση θερμοκρασίας, επικοινωνία με το διαδίκτυο }
+
+\par Αυτή η συσκευή περιλαμβάνει ένα Arduino, αισθητήρα θερμοκρασίας, τον δέκτη RF και το Ethernet Shield.
+\par O \textbf{αισθητήρας θερμοκρασίας} μετράει τη θερμοκρασία του περιβάλλοντος μέσω της τάσης εξόδου η οποία είναι ανάλογη με τη μεταβολή της θερμοκρασίας σε βαθμούς Celsius. Δέχεται 3 pins, τροφοδοσία Vcc (την τροφοδοτούμε με τάση 3.3V από το pin Vcc του  Ethernet Shield), τάση εξόδου (Vout), γείωση GND.  Ο ακροδέκτης της τάσης εξόδου Vout του αισθητήρα συνδέεται με το A1 του Analog In του Arduino.
+\par To \textbf{Ethernet Shield} χρησιμοποιείται για να επικοινωνήσει το Arduino με το Διαδίκτυο. 
+\par O \textbf{RF δέκτης} χρησιμοποιείται για την επικοινωνία με τον RF πομπό ο οποίος βρίσκεται στην πρώτη συσκευή. O αισθητήρας RF receiver έχει 4 pins, τα οποία είναι με την σειρά από αριστερά προς τα δεξιά VCC, DATA, DATA και GND. Στην παρούσα εργασία χρησιμοποιούνται το  VCC και το GND καθώς και ένα εκ των δύο DATA. Το VCC συνδέεται σε θύρα τάσςη 5V. Το GND στη γείωση. Τέλος, το DATA port συνδέεται στο όγδοο Digital pin (D8). Αφιερώνεται ξεχωριστή ενότητα στην επικοινωνία μέσω του RF Module παρακάτω.
+ \end{flushleft}
+ \newpage 
+\vspace{5mm}
+ \begin{figure}[h]
+ \includegraphics[width=0.9\textwidth,center]{dev2}
+ \caption{ Κύκλωμα 2\textsuperscript{ης} συσκευής}
+ \end{figure}
+\vspace{4mm}
+ {\large\center Καλωδίωση\\}
+  \vspace{6mm}
+ \par\textendash\hspace{0.5mm} \underline{Αισθητήρας θερμοκρασίας} \\
+ 
+ \tab\hspace{1.5mm} Vcc --> 3.3V, GND --> GND, Vout --> A1 \\
+ 
+ \par\textendash\hspace{0.5mm} \underline{RF δέκτης} \\
+  
+ \tab\hspace{1.5mm} Vcc --> 5V, GND --> GND, Data --> D8\\
+ \newpage
+ {\large \begin{center} Ακολουθεί ο κώδικας της 2 \textsuperscript{ης} συσκευής \end{center}}
+ \lstinputlisting[language=C]{codes/dev2.ino}
+ \newpage
+ {\large \begin{center} Σχόλια κώδικα 2 \textsuperscript{ης} συσκευής\end{center}}
+ \begin{flushleft}
+ \par Και στη δεύτερη συσκευή θα θέλαμε να τονίσουμε ορισμένα λεπτά σημεία. 
+Καταρχάς, επισημαίνεται ότι για τη σωστή λειτουργία του Ethernet Shield πρέπει να μην χρησιμοποιούνται τα digital pins \textit{10-13} για τη διασύνδεση εξαρτημάτων, καθώς αυτά απαιτούνται για την επικοινωνία μεταξύ του Ethernet Shield και του Arduino.
+Επίσης, για να ερμηνεύσουμε τα δεδομένα που λαμβάνουμε μέσω της επικοινωνίας RF κάθε byte που λαμβάνεται αποθηκεύεται σε ένα πίνακα από χαρακτήρες, όπου στο τέλος αυτού του πίνακα τοποθετείται ο ειδικός χαρακτήρας τερματισμού string. Έπειτα χρησιμοποιούμε την συνάρτηση \textit{atoi()} (αντίστροφη της συνάρτησης \textit{itoa()} ) για να μετατρέψουμε τον πίνακα χαρακτήρων σε ακέραιο. (γραμμές \textit{86-90} )
+ \end{flushleft}
+ \section{RF Module – Επικοινωνία των δύο Arduino}
+ \begin{flushleft}
+ Το RF module αποτελείται από ένα πομπό (transmitter) που βρίσκεται στην πρώτη συσκευή κι έναν αποδέκτη (receiver) που βρίσκεται στη δεύτερη συσκευή. \\
+ Μέσω αυτής της RF επικοινωνίας μεταφέρονται ασύρματα οι μετρήσεις των αισθητήρων της 1ης συσκευής (δηλαδή αισθητήρας καπνού, απόστασης – κίνησης και magnetic door switch) και τα οποία στέλνονται online μέσω του Ethernet Shield. Επίσης, στέλνεται online και η μέτρηση της θερμοκρασίας από την 2η συσκευή.\\
+ Αξίζει σε αυτό το σημείο να σημειωθεί ότι παρότι τα τεχνικά χαρακτηριστικά (specifications) του RF module  δηλώνουν για τον transmitter: Launch distance: 20-200 meters (different voltage, different results) και Operating voltage: 3.5-12V, ωστόσο δεν ανταποκρίνονται στην πραγματικότητα, καθώς έπειτα από δοκιμές με διάφορες τιμές τάσης η μέγιστη απόσταση λειτουργίας παρέμενε περίπου 2m. Έπειτα από σχετική έρευνα συμπεράναμε ότι αρκετές φορές η επιλογή πάρα πολύ φθηνών εξαρτημάτων εγκιμονεί τον κίνδυνο να μην ανταποκρίνονται στα διαφημιζόμενα χαρακτηριστικά τους. \\
+ Για να μεταφέρουμε την πληροφορία μέσω του RF module χρησιμοποιείται μια μορφή κωδικοποίησης. Ειδικότερα, η κωδικοποίηση που χρησιμοποιούμε περιλαμβάνει:
+ \end{flushleft}
+ 
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{N}{@{}m{0pt}@{}}
+\begin{center}
+\begin{tabular}[16pt]{ | M{0.55\textwidth} | M{0.38\textwidth} | N} 
+\hline
+Ενεργοποιημένοι Αισθητήρες & Σήμα που μεταδίδει ο Receiver &\\ [9pt]  
+\hline
+Smoke Sensor & 1 &\\ [9pt] 
+\hline
+Ultrasonic Sensor & 2 &\\ [9pt] 
+\hline
+Smoke και Ultrasonic Sensors & 3 &\\ [9pt]
+\hline
+Magnetic Door Switch Sensor & 4 &\\ [9pt]
+\hline
+Smoke και Magnetic Door Switch Sensors
+ & 5 &\\ [9pt]
+\hline
+Ultrasonic και Magnetic Door Switch Sensors & 6 &\\ [9pt]
+\hline
+Όλα μαζί & 7 &\\ [9pt]
+\hline
+\end{tabular}
+\end{center}
+Για την σωστή λειτουργία του RF module απαιτείται η χρήση της βιβλιοθήκης (Library) VirtualWire. Μπορεί να βρεθεί στο παρακάτω link:
+\url{https://www.pjrc.com/teensy/td_libs_VirtualWire.html}
+\section{Διαδικτυακή πρόσβαση}
+\begin{flushleft}
+\par Δημιουργήσαμε μία ιστοσελίδα με την οποία επικοινωνεί το Ethernet Shield και στην οποία ανεβάζει τα δεδομένα από τους αισθητήρες (θερμοκρασίας, magnetic door switch, καπνού και απόστασης – κίνησης). Τα δεδομένα αυτά μπορεί να τα δει ο χρήστης οπουδήποτε κι αν βρίσκεται, μέσα από το URL: \url{http://www.edged.xyz/connect/} (γενικά: \url{http://www.yourdomain.smth/connect/}).
+\par Για τη δημιουργία μιας αντίστοιχης σελίδας μπορείτε να χρησιμοποιήσετε ένα από τα πολλά free hosting services που υπάρχουν στο web, όπως 000webhost.com, hostinger.gr κ.α. Στη συνέχεια, θα πρέπει να ανεβάσει κανείς τα αρχεία index.php και submitdata.php μέσω ftp client ή μέσω του web interface του hosting service. Σημειώνεται ότι το αρχείο submitdata.php θα δημιουργήσει ένα τρίτο αρχείο data.php, στο οποίο αποθηκεύονται οι τιμές των μετρήσεων. Tο URL της ιστοσελίδας που θα χρησιμοποιηθεί θα πρέπει να μπει στον κώδικα της δεύτερης συσκευής στο όνομα του server και στο όνομα του Host (τα δύο σημεία υποδεικνύονται από τα σχόλια).  
+\par Παρακάτω παρουσιάζονται οι κώδικες των δύο αυτών αρχείων: 
+\end{flushleft}
+\begin{center} 
+\textbf{submitdata.php} \end{center}
+\lstinputlisting[language=PHP]{codes/submitdata.php}
+
+\newpage
+\begin{center} 
+\textbf{index.php} \end{center}
+\lstinputlisting[language=PHP]{codes/index.php}
+
+\section{Παρουσίαση Τελικού αποτελέσματος}
+\begin{flushleft}
+\par Παρακάτω παρουσιάζεται τα τελικά αποτελέσματα της εργασίας μας. 
+
+\lstinputlisting[numbers=none]{codes/pageoutput.text}
+
+Εδώ φαίνεται η καταγραφή των μετρήσεων στην ιστοσελίδας μας. Πιο συγκεκριμένα, στην πρώτη γραμμή φαίνεται η τελευταία ενημέρωση. Στη συνέχεια παρουσιάζεται η τρέχουσα κατάσταση και πότε είχαμε την τελευταία ειδοποίηση. 
+\par Εδώ φαίνεται ο σχεδιασμός του συστήματος ασφαλείας σε φωτογραφία.
+\end{flushleft}
+\vspace{5mm}
+ \begin{figure}[h]
+ \includegraphics[width=0.63\textwidth,center]{dev}
+ \caption{Τελικό κύκλωμα}
+ \end{figure}
+ \newpage
+ \begin{flushleft}
+\par Παρακάτω παρουσιάζεται και το link του github για το project:
+\url{https://github.com/dbarmperis/Digital-Systems-Interfaces.git}
+ \end{flushleft}
+
+\begin{thebibliography}{9}
+\bibitem{rf} 
+Markus Ulfberg
+\textit{Arduino: Sending integers over RF with VirtualWire}. 
+\url{http://genericnerd.blogspot.gr/2012/07/arduino-sending-integers-over-rf-with.html}.
+ 
+\bibitem{smoke} 
+Aritro Mukherjee. 
+\textit{Smoke Detection using MQ-2 Gas Sensor}.
+\url{https://create.arduino.cc/projecthub/Aritro/smoke-detection-using-mq-2-gas-sensor-79c54a}.
+ 
+\bibitem{temp} 
+lady ada. 
+\textit{TMP36 Temperature Sensor}.
+\url{https://learn.adafruit.com/tmp36-temperature-sensor/using-a-temp-sensor}.
+ 
+\bibitem{ethernet} 
+arduino.cc. 
+\textit{Web Client Repeating}.
+\url{https://www.arduino.cc/en/Tutorial/WebClientRepeating}.
+ 
+\end{thebibliography}
+
+
+\end{document}
+
