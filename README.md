@@ -202,18 +202,19 @@ different results) και Operating voltage: 3.5-12V, ωστόσο δεν
 μορφή κωδικοποίησης. Ειδικότερα, η κωδικοποίηση που χρησιμοποιούμε
 περιλαμβάνει:
 
-[1]<span>\>m<span>\#1</span></span>
+<!-- [1]<span>\>m<span>\#1</span></span> -->
 
-[16pt]<span> | M<span>0.55</span> | M<span>0.38</span> | N</span>
-Ενεργοποιημένοι Αισθητήρες & Σήμα που μεταδίδει ο Receiver &\
-[9pt] Smoke Sensor & 1 &\
-[9pt] Ultrasonic Sensor & 2 &\
-[9pt] Smoke και Ultrasonic Sensors & 3 &\
-[9pt] Magnetic Door Switch Sensor & 4 &\
-[9pt] Smoke και Magnetic Door Switch Sensors & 5 &\
-[9pt] Ultrasonic και Magnetic Door Switch Sensors & 6 &\
-[9pt] Όλα μαζί & 7 &\
-[9pt]
+<!-- [16pt]<span> | M<span>0.55</span> | M<span>0.38</span> | N</span> -->
+Ενεργοποιημένοι Αισθητήρες | Σήμα που μεταδίδει ο Receiver
+:---: | :---: 
+Smoke Sensor | 1 
+Ultrasonic Sensor | 2 
+Smoke και Ultrasonic Sensors | 3 
+Magnetic Door Switch Sensor | 4 
+Smoke και Magnetic Door Switch Sensors | 5
+Ultrasonic και Magnetic Door Switch Sensors | 6
+Όλα μαζί | 7
+
 
 Για την σωστή λειτουργία του RF module απαιτείται η χρήση της
 βιβλιοθήκης (Library) VirtualWire. Μπορεί να βρεθεί στο παρακάτω link:
